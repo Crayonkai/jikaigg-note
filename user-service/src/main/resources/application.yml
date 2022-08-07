@@ -1,0 +1,22 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.56.104:3306/jikaiggu?useSSL=false
+    username: root
+    password: yaojikai
+    driver-class-name: com.mysql.jdbc.Driver
+mybatis:
+  type-aliases-package: com.jikaigg.note.pojo
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+logging:
+  level:
+    cn.itcast: info
+  pattern:
+    dateformat: MM-dd HH:mm:ss:SSS
+# eureka:
+#   client:
+#     service-url:
+#       defaultZone: http://127.0.0.1:10086/eureka

@@ -1,0 +1,17 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/jikaigg?useSSL=false&serverTimezone=UTC
+    username: root
+    password: yaojikai2
+    driver-class-name: com.mysql.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:com/jikaigg/orm/mapper/*.xml
+
+logging:
+  level:
+    # 开启打印日志级别为debug
+    com.jikaigg.orm.mapper: debug
+

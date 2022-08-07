@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jikaigg.orm.mapper.BizUserMapper">
+    <resultMap id="resultMap" type="com.jikaigg.orm.domain.BizUserDto">
+        <id column="id" property="id" javaType="Integer" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="phonenum" property="phonenum" jdbcType="VARCHAR" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+    </resultMap>
+    <select id="selectByUsername" resultMap="resultMap" parameterType="java.lang.String">
+        select * from biz_user where username = #{username}
+    </select>
+</mapper>

@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    nacos:
+      server-addr: 192.168.56.104:8848 #nacos服务地址
+#      discovery:
+#        cluster-name: HZ   # 集群名称，SH代指上海
+      config:
+        file-extension: yaml
+  profiles:
+    active: dev
+  application:
+    name: userservice

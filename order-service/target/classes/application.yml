@@ -1,0 +1,38 @@
+server:
+  port: 8080
+spring:
+  cloud:
+    nacos:
+      server-addr: 192.168.56.104:8848 #nacos服务地址
+#      discovery:
+#        cluster-name: SH   # 集群名称，SH代指上海
+  datasource:
+    url: jdbc:mysql://192.168.56.104:3306/jikaiggo?useSSL=false
+    username: root
+    password: yaojikai
+    driver-class-name: com.mysql.jdbc.Driver
+  application:
+    name: orderservice
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://127.0.0.1:10086/eureka
+mybatis:
+  type-aliases-package: com.jikaigg.note.pojo
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+logging:
+  level:
+    cn.itcast: info
+  pattern:
+    dateformat: MM-dd HH:mm:ss:SSS
+userservice:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.alibaba.cloud.nacos.ribbon.NacosRule
+
+feign:
+  client:
+    config:
+      default:
+        logger-level: FULL
