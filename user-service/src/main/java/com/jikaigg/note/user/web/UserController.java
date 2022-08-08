@@ -19,15 +19,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//    @Value("${partten.dateformat}")
+    //    @Value("${partten.dateformat}")
 //    private String dateformat;
     @Autowired
     private ParttenConfig parttenConfig;
 
     @GetMapping("now")
-    private String getNow(){
+    private String getNow() {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern(parttenConfig.getDateformat()));
     }
+
     /**
      * 路径： /user/110
      *
@@ -35,7 +36,9 @@ public class UserController {
      * @return 用户
      */
     @GetMapping("/{id}")
-    public User queryById(@PathVariable("id") Long id) {
+    public User queryById(@PathVariable("id") Long id,
+                          @RequestHeader(value = "yao", required = false) String yao) {
+        log.info("yao:{}",yao);
         return userService.queryById(id);
     }
 }

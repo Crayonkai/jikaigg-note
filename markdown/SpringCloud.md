@@ -269,6 +269,115 @@ FULL：除了HEADERS中定义的信息之外，还有请求的正文和响应数
 </dependency>
 ```
 
+#### Predicate断言工厂
+
+读取配置的断言规则，判断是否允许请求
+
+![image-20220808231027058](./img/Predicate.png)
+
+#### 路由过滤器 GatewayFilter
+
+队进入网关的请求和微服务返回的响应做处理
+
+#### 全局过滤器
+
+实现GlobalFilter接口，添加@Order注解
+
+```java
+//@Order(-1)  //定义过滤器的执行顺序，数越小执行越早
+@Component
+public class AuthorizeFilter implements GlobalFilter, Ordered {
+    @Override
+    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        // 1. 获取请求参数
+        ServerHttpRequest request = exchange.getRequest();
+        // 2.获取参数中的AuthorizeFile
+        MultiValueMap<String, String> params = request.getQueryParams();
+        // 3.判断参数之是否等于admin
+        String first = params.getFirst("authorization");
+        // 4.是，放行
+        if ("admin".equals(first)) {
+            return chain.filter(exchange);
+        } else {
+            // 5.1 设置状态码
+            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            // 5.否，拦截
+            return exchange.getResponse().setComplete();
+        }
+    }
+    //事项Ordered接口重写方法，和@Order注解效果一样
+    @Override
+    public int getOrder() {
+        return -1;
+    }
+}
+```
+
+![image-20220808233840441](./img/GatewayFilter.png)
+
+**过滤器执行顺序：路由过滤器和detaultFilter有spring管理，按照顺序由1递增；defaultFilter>路由过滤器>GloblaFilter**
+
+#### 跨域问题
+
+> 域名不一致就是跨域
+>
+> * 域名不同：www.taobao.com和www.taobao.org ; www.jd.com和www.miaosha.jd.com
+>
+> * 域名相同端口不通:：localhost:8080和localhost:8081
+>
+>   浏览器禁止请求的发起者与服务端发生跨域ajax请求，请求被浏览器拦截的问题
+>
+> 解决方案：CORS
+
+#### 配置文件
+
+```java
+server:
+  port: 8085
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      server-addr: 192.168.56.104:8848 #nacos服务地址
+      #      discovery:
+      #        cluster-name: HZ   # 集群名称，SH代指上海
+      config:
+        file-extension: yaml
+    gateway:
+      routes: #网关路由配置
+        - id: userservice #路由id，自定义，只要唯一即可
+          #          uri: http://192.168.56.104:8848/userservice #路由的目标地址http就是固定地址
+          uri: lb://userservice #路由的目标地址是lb就是负载均衡，后面跟服务名称
+          predicates: #路由断言，也就是判断请求是否符合路由规则的条件
+            - Path=/user/** #这个是按照路径匹配，只要是/user/开头就符合要求
+#          filters:
+#            - AddRequestHeader=yao,jikai
+        - id: orderservice
+          uri: lb://orderservice
+          predicates:
+            - Path=/order/**
+#            - After=2031-04-13T11:11:11.010+08:00[Asia/Shanghai]  #这个时间点之后允许访问
+            - Before=2031-04-13T11:11:11.010+08:00[Asia/Shanghai]  #这个时间点之前允许访问
+      default-filters: #默认过滤器，全局的
+        - AddRequestHeader=yao,jikai111
+      globalcors: # 全局的跨域处理
+        add-to-simple-url-handler-mapping: true # 解决options请求被拦截问题
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: # 允许哪些网站的跨域请求
+              - "http://localhost:8090"
+              - "http://www.leyou.com"
+            allowedMethods: # 允许的跨域ajax的请求方式
+              - "GET"
+              - "POST"
+              - "DELETE"
+              - "PUT"
+              - "OPTIONS"
+            allowedHeaders: "*" # 允许在请求中携带的头信息
+            allowCredentials: true # 是否允许携带cookie
+            maxAge: 360000 # 这次跨域检测的有效期
+```
 
 
 
@@ -298,16 +407,29 @@ FULL：除了HEADERS中定义的信息之外，还有请求的正文和响应数
 
 
 
+## 设计模式
+
+>设计模式六大原则：
+>
+>1. 开闭原则（Open Closed Principle，OCP）对扩展开放，对修改关闭
+>2. 单一职责原则（Single Responsibility Principle, SRP）一个类只负责一个功能领域中的相应职责
+>3. 里氏代换原则（Liskov Substitution Principle，LSP）所有引用基类的地方必须能透明地使用其子类的对象
+>4. 依赖倒转原则（Dependency Inversion Principle，DIP）依赖于抽象，不能依赖于具体实现
+>5. 接口隔离原则（Interface Segregation Principle，ISP）类之间的依赖关系应该建立在最小的接口上
+>6. 合成/聚合复用原则（Composite/Aggregate Reuse Principle，CARP）尽量使用合成/聚合，而不是通过继承达到复用的目的
+>7. 最少知识原则（Least Knowledge Principle，LKP）或者迪米特法则（Law of  Demeter，LOD）一个软件实体应当尽可能少的与其他实体发生相互作用
+
+#### 适配器模式
 
 
 
+#### 门面模式
 
+要求一个子系统的外部与其内部的通信必须通过一个统一的对象进行。门面模式提供一个高层次的接口，使得子系统更易于使用。
 
+优点：高内聚，松耦合。安全，不通过门面上提供的方法，休想访问模块内部。
 
-
-
-
-
+门面模式是个很好的模式，很符合面向接口编程，遵守了依赖倒置原则、迪米特法则等，当然，有些书说违背了开-闭原则，我个人认为，门面模式并不妨碍拓展，只要把基类抽取好，新功能只需要继承或依赖与基类即可。
 
 
 
