@@ -379,7 +379,9 @@ spring:
             maxAge: 360000 # 这次跨域检测的有效期
 ```
 
+## Docker
 
+![image-20220809001950576](./img/docker-vm.png)
 
 
 
@@ -448,6 +450,17 @@ sudo /bin/bash /usr/local/nacos/bin/startup.sh -m standalone
 3. 保存退出修改权限
 chmod 775 nacos-start
 ```
+
+#### 工作中的环境问题
+
+DEV Development 研发环境
+SIT System Integrate Test 系统集成测试环境（内测）
+UAT User Acceptance Test 用户验收测试环境
+PET Performance Evaluation Test 性能评估测试环境（压测）
+SIM Simulation 高仿真环境
+PRD/PROD Production 正式/生产环境
+
+小米：dev->staging->prod
 
 
 
