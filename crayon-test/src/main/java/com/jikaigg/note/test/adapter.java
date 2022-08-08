@@ -1,4 +1,4 @@
-package com.jikaigg.note.feign.test;
+package com.jikaigg.note.test;
 
 
 // 目标接口

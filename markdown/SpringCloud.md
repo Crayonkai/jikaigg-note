@@ -16,6 +16,46 @@
 >
 >  Eureka Server之间通过复制的方式完成数据的同步，Eureka还提供了客户端缓存机制，即使所有的Eureka Server都挂掉，客户端依然可以利用缓存中的信息消费其他服务的API。综上，Eureka通过心跳检查、[客户端缓存](https://baike.baidu.com/item/客户端缓存/10237000)等机制，确保了系统的高可用性、灵活性和可伸缩性。
 
+依赖包
+
+```java
+<!-- eureka服务端 -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+</dependency>
+<!-- eureka客户端 -->  
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+</dependency>
+```
+
+#### eureka配置
+
+```yaml
+# 服务端配置
+server:
+  port: 10086  #配置eureka服务的端口
+spring:
+  application:
+    name: eurekaserver #配置服务名称
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka  # 注册到eureka注册中心（服务端也作为一个服务注册进去）
+      
+# 客户端配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka   # 注册到eureka注册中心
+```
+
+
+
+
+
 ## Ribbon
 
 > Ribbon 是 NetFlix 公司推出的开源软件，是基于 HTTP 和 TCP 协议的，其主要功能是实现客户端的负载均衡算法。
@@ -193,6 +233,40 @@ public interface UserClient {
     @GetMapping("/user/{id}")
     User queryById(@PathVariable("id") Long id);
 }
+```
+
+#### 日志配置
+
+```java
+import feign.Logger;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class OpenFeignConfig {
+    @Bean
+    Logger.Level feignLogLevel(){
+        return Logger.Level.FULL;
+    }
+}
+
+NONE：默认，不显示任何日志；
+BASIC: 仅记录请求方法、URL、响应状态码及执行时间；
+HEADERS：除了BASIC中定义的信息之外，还有请求头和响应头信息；
+FULL：除了HEADERS中定义的信息之外，还有请求的正文和响应数据。
+```
+
+
+
+## SpringCloud-gateway
+
+#### 依赖包
+
+```java
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-gateway</artifactId>
+</dependency>
 ```
 
 
