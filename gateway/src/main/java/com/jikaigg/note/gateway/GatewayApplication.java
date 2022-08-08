@@ -1,9 +1,11 @@
 package com.jikaigg.note.gateway;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 @SpringBootApplication
 public class GatewayApplication {
     public static void main(String[] args) {
-        GatewayApplication.run(OrderApplication.class, args);
+        SpringApplication.run(GatewayApplication.class, args);
     }
-
 }

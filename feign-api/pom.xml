@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>feign-api</artifactId>
-    <name>feign-api Tapestry 5 Application</name>
+    <name>feign-api</name>
     <packaging>war</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
