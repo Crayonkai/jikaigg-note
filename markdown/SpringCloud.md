@@ -383,11 +383,92 @@ spring:
 
 ![image-20220809001950576](./img/docker-vm.png)
 
+#### Docker安装
+
+```shell
+# 更新现有的软件包列表
+sudo apt update
+# 安装一些必备软件包，让 apt 通过 HTTPS 使用软件包
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+# 将官方 Docker 版本库的 GPG 密钥添加到系统中
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+# 将 Docker 版本库添加到APT源
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+# 用新添加的 Docker 软件包来进行升级更新
+sudo apt update
+# 安装docker
+sudo apt install docker-ce
+# 启动docker
+sudo systemctl status docker
+#配置镜像加速器
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": ["https://79i2k8vr.mirror.aliyuncs.com"]
+}
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
 
 
 
+#### Docker镜像命令
 
+![image-20220809230635132](./img/docker1.png)
 
+```shell
+# 查看docker镜像
+docker images
+# 从dockerhub拉取redis最新版本的镜像
+docker pull redis:latest
+# 查看docker镜像
+docker images
+# 保存docker镜像中redis为redis.tar压缩包到本地
+docker save -o redis.tar redis:latest
+# 查看本地文件，多了一个redis.tar文件
+ls
+# 删除docker中redis镜像
+docker rmi redis
+# 查看docker镜像
+docker images
+# 导入本地目录redis.tar文件到docker镜像
+docker load -i redis.tar
+# 查看docker镜像
+docker images
+```
+
+#### Docker容器命令
+
+![image-20220809232543363](./img/docker.png)
+
+```shell
+# 创建运行一个Nginx容器
+docker run --name some-nginx -d -p 8080:80 some-content-nginx
+# 查看mynginx容器的日志
+docker logs mynginx
+# 跟踪查看mynginx容器的日志，相当于linux的tail -f
+docker logs -f mynginx
+# 查看当前运行的容器
+docker ps
+#容器id  运行镜像  不知道   创建时长   状态   端口映射  容器名称
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS                               NAMES
+9eabe07f4808   nginx     "/docker-entrypoint.…"   11 minutes ago   Up 11 minutes   0.0.0.0:80->80/tcp, :::80->80/tcp   mynginx
+#展示所有容器，包括暂停和停止的容器
+docker ps -a
+# 删除容器 -f 强制删除
+docker rm -f mynginx
+```
+
+![image-20220809234111927](./img/docker2.png)
+
+```shell
+# docker exec：进入容器内部，执行一个命令
+# -it 给大哥前进入的容器创建一个标准输入输出终端，允许我们与容器交互
+# mynginx 要进入的容器名称
+# bash 进入容器后执行的命令，bash是一个linux终端交互命令
+docker exec -it mynginx bash
+```
 
 
 
