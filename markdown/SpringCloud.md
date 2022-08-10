@@ -470,9 +470,58 @@ docker rm -f mynginx
 docker exec -it mynginx bash
 ```
 
+#### 数据卷
 
+```shell
+docker volume [COMMAND]
+create 创建一个volume
+inspect 显示一个或多个volume的详细信息
+ls 列出所有的volume
+prune  删除未使用的volume
+rm  删除一个或多个指定的volume
+```
 
+![image-20220810225155928](./img/docker3.png)
 
+```shell
+# 数据卷挂载
+docker run --name mynginx -d -p 80:80 -v html:/usr/share/nginx/html nginx
+```
+
+![image-20220810231723776](./img/docker4.png)
+
+#### 自定义镜像
+
+![image-20220810232307995](./img/docker5.png)
+
+![image-20220810232524759](./img/docker6.png)
+
+#### Dockerfile镜像构建文件
+
+```shell
+# 指定基础镜像
+FROM ubuntu:16.04
+# 配置环境变量，JDK的安装目录
+ENV JAVA_DIR=/usr/local
+
+# 拷贝jdk和java项目的包
+COPY ./jdk8.tar.gz $JAVA_DIR/
+COPY ./docker-demo.jar /tmp/app.jar
+
+# 安装JDK
+RUN cd $JAVA_DIR \
+ && tar -xf ./jdk8.tar.gz \
+ && mv ./jdk1.8.0_144 ./java8
+
+# 配置环境变量
+ENV JAVA_HOME=$JAVA_DIR/java8
+ENV PATH=$PATH:$JAVA_HOME/bin
+
+# 暴露端口
+EXPOSE 8090
+# 入口，java项目的启动命令
+ENTRYPOINT java -jar /tmp/app.jar
+```
 
 
 
