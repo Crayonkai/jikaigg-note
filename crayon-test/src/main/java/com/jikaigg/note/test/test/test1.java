@@ -79,53 +79,40 @@ public class test1 {
         }
         System.out.println(stringBuilder1);
         // 定义分钟，秒整型变量
-        int min = 0, sec = 0;
+        int sec = 0,min=0,hour=0;
         // 按，切割字符串，切割出来的String数组的元素就是hh:mm
         String[] split1 = stringBuilder1.toString().split(",");
         int count = 0;
         for (String s : split1) {
             String[] split2 = s.split(":");
-            // 数组的0元素是分钟。1元素是秒
-            min += Integer.parseInt(split2[0].toString());
+            sec+=Integer.parseInt(split2[0].toString()) *60;
             sec += Integer.parseInt(split2[1].toString());
-            System.out.println(min+":"+sec);
-            int i = sec / 60;
-            min += i;
-            int i1 = sec % 60;
-            int i2 = min / 60;
-            int i3 = min % 60;
-//        System.out.println(i2);
-            System.out.println("当前是第"+count+"次遍历"+min+":"+sec+"||"+i2 + ":" + i3 + ":" + i1);
+            System.out.println("当前是第"+count+"次遍历，共 "+sec+" 秒");
             count++;
         }
-        System.out.println(min + ":" + sec);
-        int i = sec / 60;
-        min += i;
-        int i1 = sec % 60;
-        int i2 = min / 60;
-        int i3 = min % 60;
-//        System.out.println(i2);
-        System.out.println(i2 + ":" + i3 + ":" + i1);
+        min=sec/60;
+        sec=sec%60;
+        hour=min/60;
+        min=min%60;
+        System.out.println(hour+":"+min+":"+sec);
 
     }
     public static void test2(){
-        String str = "09:23,08:05,01:17,13:32,12:33,03:59";
-        int min = 0, sec = 0;
+        String str = "09:23,08:05,01:17,13:32,12:33";
+        int sec = 0,min=0,hour=0;
         String[] split1 = str.toString().split(",");
         int count = 0;
         for (String s : split1) {
             String[] split2 = s.split(":");
-            System.out.println(split2[0].toString()+":"+split2[1]);
-            min += Integer.parseInt(split2[0].toString());
+            sec+=Integer.parseInt(split2[0].toString()) *60;
             sec += Integer.parseInt(split2[1].toString());
-            System.out.println("当前是第"+count+"次遍历"+min+":"+sec);
-            int i = sec / 60;
-            int i1 = sec % 60;
-            min += i;
-            int i2 = min / 60;
-            int i3 = min % 60;
-            System.out.println("总计为----"+i2 + ":" + i3 + ":" + i1);
+            System.out.println("当前是第"+count+"次遍历，共 "+sec+" 秒");
             count++;
         }
+        min=sec/60;
+        sec=sec%60;
+        hour=min/60;
+        min=min%60;
+        System.out.println(hour+":"+min+":"+sec);
     }
 }
