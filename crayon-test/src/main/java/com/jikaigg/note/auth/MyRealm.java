@@ -1,4 +1,4 @@
-package com.jikaigg.auth;
+package com.jikaigg.note.auth;
 
 import com.jikaigg.orm.domain.Account;
 import com.jikaigg.service.AccountService;

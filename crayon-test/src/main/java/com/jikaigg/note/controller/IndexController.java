@@ -1,4 +1,4 @@
-package com.jikaigg.controller;
+package com.jikaigg.note.controller;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;

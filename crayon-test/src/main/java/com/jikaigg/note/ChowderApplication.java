@@ -1,4 +1,4 @@
-package com.jikaigg;
+package com.jikaigg.note;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

@@ -1,4 +1,4 @@
-package com.jikaigg.service;
+package com.jikaigg.note.service;
 
 public class CoverUtil {
     public static void main(String[] args) {

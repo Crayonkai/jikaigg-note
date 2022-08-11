@@ -1,4 +1,4 @@
-package com.jikaigg.common;
+package com.jikaigg.note.common;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

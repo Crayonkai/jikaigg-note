@@ -1,4 +1,4 @@
-package com.jikaigg.domain;
+package com.jikaigg.note.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

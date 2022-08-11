@@ -1,4 +1,4 @@
-package com.jikaigg.controller;
+package com.jikaigg.note.controller;
 
 import com.jikaigg.common.Result;
 import com.jikaigg.domain.UserVo;

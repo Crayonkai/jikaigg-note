@@ -1,4 +1,4 @@
-package com.jikaigg.orm.mapper;
+package com.jikaigg.note.orm.mapper;
 
 import com.jikaigg.orm.domain.BizUserDto;
 import org.apache.ibatis.annotations.Mapper;

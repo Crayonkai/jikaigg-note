@@ -1,4 +1,4 @@
-package com.jikaigg.orm.domain;
+package com.jikaigg.note.orm.domain;
 
 import lombok.Data;
 

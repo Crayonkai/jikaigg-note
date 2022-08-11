@@ -1,4 +1,4 @@
-package com.jikaigg.configuration;
+package com.jikaigg.note.configuration;
 
 import com.jikaigg.auth.MyRealm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;

@@ -1,4 +1,4 @@
-package com.jikaigg.service;
+package com.jikaigg.note.service;
 
 import com.jikaigg.orm.domain.BizUserDto;
 import com.jikaigg.orm.mapper.BizUserMapper;
