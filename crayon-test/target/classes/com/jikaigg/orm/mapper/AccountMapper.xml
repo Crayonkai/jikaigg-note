@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jikaigg.orm.mapper.AccountMapper">
+    <resultMap id="resultMap" type="com.jikaigg.orm.domain.Account">
+        <id column="id" property="id" javaType="Integer" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="perms" property="perms" jdbcType="VARCHAR" />
+        <result column="role" property="role" jdbcType="VARCHAR" />
+    </resultMap>
+    <select id="selectByUsername" resultType="com.jikaigg.orm.domain.Account" parameterType="java.lang.String">
+        select * from account where username = #{username}
+    </select>
+</mapper>
