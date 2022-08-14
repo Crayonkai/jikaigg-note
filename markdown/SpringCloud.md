@@ -3063,7 +3063,25 @@ ENTRYPOINT java -jar /tmp/app.jar
 
 ## MQ
 
+#### RabbitMQ
 
+**下载安装**
+
+```shell
+# docker安装
+docker pull rabbitmq
+# 启动,因为最新版本的rabbitmq不带管理页面插件，需要下载启动management
+docker run \
+-e RABBITMQ_DEFAULT_USER= jikaigg \
+-e RABBITMQ_DEFAULT_PASS= yaojikai \
+--name mq \
+-p 15672:15672 \
+-p 5672:5672 \
+-d \
+rabbitmq:3-management
+```
+
+![image-20220813202351294](./img/rabbitmq1.png)
 
 
 
@@ -4465,6 +4483,60 @@ Redis2.6开始redis-cli支持一种新的被称之为pipe mode的新模式用于
 4. 所以我们不断地穿越内存限制的边界，通过不断达到边界然后不断地回收回到边界以下。
 
 如果一个命令的结果导致大量内存被使用（例如很大的集合的交集保存到一个新的键），不用多久内存限制就会被这个内存使用量超越。
+
+
+
+
+
+
+
+
+
+
+
+## elasticsearch
+
+>Elasticsearch 是一个分布式、高扩展、高实时的搜索与[数据分析](https://baike.baidu.com/item/数据分析/6577123)引擎。它能很方便的使大量数据具有搜索、分析和探索的能力。充分利用Elasticsearch的水平伸缩性，能使数据在生产环境变得更有价值。
+>
+>Elasticsearch是与名为Logstash的数据收集和日志解析引擎以及名为Kibana的分析和可视化平台一起开发的。这三个产品被设计成一个集成解决方案，称为“Elastic Stack”（以前称为“ELK stack”）。
+
+#### Docker安装启动es
+
+```shell
+# 创建网络
+docker network create es-net
+# 拉取镜像 
+docker pull elasticsearch
+# 启动
+docker run -d \  # 后台运行
+  --name es \  # 服务名
+  -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" \  #环境变量，配置jvm堆内存大小，默认为1G
+  -e "discovery.type=single-node" \   # 单点启动，不使用集群
+  -v es-data:/usr/share/elasticsearch/data\  #数据卷挂载目录
+  -v es-plugins:/usr/share/elasticsearch/plugins \ # 数据卷挂载插件
+  --privileged \  # 
+  --network es-net \ #加入网络
+  -p 9200:9200 \  #暴露端口 9200 http协议端口
+  -p 9300:9300 \   # 
+  elasticsearch
+# -----------------
+  docker run -d --name es -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" -e "discovery.type=single-node"   -v es-data:/usr/share/elasticsearch/data   -v es-plugins:/usr/share/elasticsearch/plugins   --privileged --network  es-net   -p 9200:9200   -p 9300:9300   elasticsearch
+
+```
+
+#### 安装kibana
+
+
+
+#### 安装ik分词器
+
+
+
+
+
+
+
+
 
 ---
 

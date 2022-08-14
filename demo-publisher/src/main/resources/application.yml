@@ -1,0 +1,7 @@
+spring:
+  rabbitmq:
+    host: 192.168.56.104
+    username: jikaigg
+    password: yaojikai
+    port: 5672
+    virtual-host: /
