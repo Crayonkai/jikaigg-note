@@ -4549,6 +4549,17 @@ docker run -d \  # 后台运行
 
 #### 安装ik分词器
 
+#### RestClient
+
+```java
+<!--导依赖elasticsearch-->
+<dependency>
+    <groupId>org.elasticsearch.client</groupId>
+    <artifactId>elasticsearch-rest-high-level-client</artifactId>
+    <version>7.12.1</version>
+</dependency>
+```
+
 
 
 
