@@ -14,6 +14,12 @@
 
 #### 怎么解决循环依赖
 
+三级缓存：
+
+1.  singletonObjects:一级缓存：实例化好的对象
+2. earlySingletonObjects:二级缓存：AOP动态代理后的对象，然后做依赖注入
+3. singletonFactories:三级缓存：拿到beandefination定义初始化对象
+
 ---
 
 ---
