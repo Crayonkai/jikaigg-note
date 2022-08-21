@@ -1,10 +1,12 @@
 package com.jikaigg.hotal.pojo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class HotelDoc {
     private Long id;
     private String name;
@@ -17,6 +19,8 @@ public class HotelDoc {
     private String business;
     private String location;
     private String pic;
+
+    private Object distance;
 
     public HotelDoc(Hotel hotel) {
         this.id = hotel.getId();

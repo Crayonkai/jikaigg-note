@@ -3,6 +3,7 @@ package com.jikaigg.hotal;
 import com.alibaba.fastjson.JSON;
 import com.jikaigg.hotal.pojo.Hotel;
 import com.jikaigg.hotal.pojo.HotelDoc;
+import com.jikaigg.hotal.pojo.RequestParam;
 import com.jikaigg.hotal.service.IHotelService;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
@@ -131,6 +132,12 @@ public class HotalDocumentTest {
         // 发送请求
         client.bulk(request, RequestOptions.DEFAULT);
     }
+
+    /*@Test
+    public void test10() throws IOException {
+        Map<String, List<String>> filters = iHotelService.filters(RequestParam requestParam);
+        System.out.println(filters);
+    }*/
 
 
 }
