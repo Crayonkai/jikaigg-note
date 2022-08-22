@@ -18,6 +18,7 @@
         <module>demo-publisher</module>
         <module>crayon-dianping</module>
         <module>crayon-hotal-es</module>
+        <module>crayon-hotal</module>
     </modules>
 
     <packaging>pom</packaging>

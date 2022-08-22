@@ -14,4 +14,8 @@ public interface IHotelService extends IService<Hotel> {
     PageResult search(RequestParam requestParam) throws IOException;
 
     Map<String, List<String>> filters(RequestParam requestParam) throws IOException;
+
+    void insertById(Long id);
+
+    void deleteById(Long id);
 }

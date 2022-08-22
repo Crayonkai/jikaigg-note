@@ -8,13 +8,17 @@ import com.jikaigg.hotal.pojo.HotelDoc;
 import com.jikaigg.hotal.pojo.PageResult;
 import com.jikaigg.hotal.pojo.RequestParam;
 import com.jikaigg.hotal.service.IHotelService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -34,10 +38,12 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class HotelService extends ServiceImpl<HotelMapper, Hotel> implements IHotelService {
 
     @Autowired
     private RestHighLevelClient client;
+
 
     @Override
     public PageResult search(RequestParam requestParam) {
@@ -103,6 +109,37 @@ public class HotelService extends ServiceImpl<HotelMapper, Hotel> implements IHo
         List<String> starNameAgg = getAggByName(aggregations, "starNameAgg");
         result.put("starName", starNameAgg);
         return result;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        try {
+            log.info("监听到消息队列中有删除请求，id为：{}", id.toString());
+            // 准备request
+            DeleteRequest deleteRequest = new DeleteRequest("hotal", id.toString());
+            // 发送请求
+            client.delete(deleteRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void insertById(Long id) {
+        try {
+            log.info("监听到消息队列中有新增或修改请求，id为：{}", id.toString());
+            // 根据id查询数据库
+            Hotel hotel = getById(id);
+            HotelDoc hotelDoc = new HotelDoc(hotel);
+            // 准备request
+            IndexRequest request = new IndexRequest("hotal").id(hotel.getId().toString());
+            // 准备DSL
+            request.source(JSON.toJSONString(hotelDoc), XContentType.JSON);
+            // 发送请求
+            client.index(request, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private List<String> getAggByName(Aggregations aggregations, String agg) {
