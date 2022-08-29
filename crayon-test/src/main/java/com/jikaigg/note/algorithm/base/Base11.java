@@ -2,7 +2,7 @@ package com.jikaigg.note.algorithm.base;
 
 public class Base11 {
     public static void main(String[] args) {
-        System.out.println(reverse(9646324351));
+        System.out.println(reverse(964632435));
         System.out.println(reverse(-123));
     }
 
