@@ -52,5 +52,28 @@ public class Base4 {
             }
         }
         System.out.println(stack.empty());
+
+        System.out.println("(]".charAt(0));
+
+        System.out.println(isValid("(]"));
+    }
+
+
+    public static boolean isValid(String s) {
+        Stack stack = new Stack();
+        for(int i = 0;i<s.length();i++){
+            if("(".equals(s.charAt(i)) ||"[".equals(s.charAt(i)) ||"{".equals(s.charAt(i))){
+                stack.push(s.charAt(i));
+            }
+            if(")".equals(s.charAt(i))){
+                if(stack.empty()){return false;}else if(stack.peek().equals("(")){stack.pop();}else{return false;}
+            }else if("]".equals(s.charAt(i))){
+                if(stack.empty()){return false;}else if(stack.peek().equals("[")){stack.pop();}else{return false;}
+            }else if("}".equals(s.charAt(i))){
+                if(stack.empty()){return false;}else if(stack.peek().equals("{")){stack.pop();}else{return false;}
+            }
+        }
+        return stack.empty()?true:false;
+
     }
 }
