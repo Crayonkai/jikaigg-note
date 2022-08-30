@@ -45,7 +45,7 @@ public class Base4 {
                     boolean b = compareTwo(stack.peek(), s);
                     if (b) {
                         stack.pop();
-                    }else {
+                    } else {
                         stack.push(s);
                     }
                 }
@@ -55,25 +55,36 @@ public class Base4 {
 
         System.out.println("(]".charAt(0));
 
-        System.out.println(isValid("(]"));
+        System.out.println(isValid("()"));
     }
 
 
     public static boolean isValid(String s) {
         Stack stack = new Stack();
-        for(int i = 0;i<s.length();i++){
-            if("(".equals(s.charAt(i)) ||"[".equals(s.charAt(i)) ||"{".equals(s.charAt(i))){
-                stack.push(s.charAt(i));
-            }
-            if(")".equals(s.charAt(i))){
-                if(stack.empty()){return false;}else if(stack.peek().equals("(")){stack.pop();}else{return false;}
-            }else if("]".equals(s.charAt(i))){
-                if(stack.empty()){return false;}else if(stack.peek().equals("[")){stack.pop();}else{return false;}
-            }else if("}".equals(s.charAt(i))){
-                if(stack.empty()){return false;}else if(stack.peek().equals("{")){stack.pop();}else{return false;}
+        String str = null;
+        for(int i = 0; i < s.length(); i++){
+            str = String.valueOf(s.charAt(i));
+            if(stack.isEmpty()){
+                stack.push(str);
+            }else{
+                if(")".equals(str) && stack.peek().equals("(")){
+                    stack.pop();
+                }else{
+                    stack.push(str);
+                }
+                if( "]".equals(str) && stack.peek().equals("[")){
+                    stack.pop();
+                }else{
+                    stack.push(str);
+                }
+                if("}".equals(str) && stack.peek().equals("{")){
+                    stack.pop();
+                }else{
+                    stack.push(str);
+                }
             }
         }
-        return stack.empty()?true:false;
+        return stack.isEmpty()?true:false;
 
     }
 }
