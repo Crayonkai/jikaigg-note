@@ -1,7 +1,11 @@
 package com.jikaigg.note.juc;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 public class Demo1 {
-    new ConcurrentHashMap
+    public static void main(String[] args) {
+
+        int a = 3;
+        Integer b = a;
+        System.out.println(b);
+
+    }
 }

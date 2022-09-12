@@ -4664,6 +4664,31 @@ jdk1.8及以前版本底层是char数组，9以后改为byte数组，目的是�
 
 char[] 或 byte[] 由final修饰，为不可变，线程安全。
 
+```java
+public static void main(String[] args) {
+        String str1 = "a";
+        String str2 = "b";
+        String str3 = "ab";
+        String str4 = "a" + "b";
+        // 编译器优化，("a"+"b"等同于"ab")
+        System.out.println(str3 == str4); // true
+        String str5 = str1 + "b";
+        // 拼接字符串，"+"符号两边出现变量，jvm编译的时候使用的是StringBuilder通过append的形式拼接的字符串，jdk5以前使用的是StringBuffer（因为StringBuilder是jdk5以后出现的）
+        System.out.println(str3 == str5); // false
+        String str6 = "a" + str2;
+        System.out.println(str3 == str6);  // false
+        String str7 = str1 + str2;
+        System.out.println(str7 == str6);  // false
+        final String str8 = "a";
+        final String str9 = "b";
+        String str10 = str8 + str9;
+        // str8和str9被final修饰，姿势str10进行str8拼接str9等同于 常量/字面量 字符串拼接
+        System.out.println(str3 == str10);  // true
+    }
+```
+
+
+
 #### 集合
 
 ##### HashMap
