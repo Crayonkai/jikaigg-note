@@ -130,6 +130,24 @@ Lock：显式
    * 有可能抛异常
 4. 使用线程池
 
+## ThreadLocal
+
+>多线程中创建线程私有局部变量的一个类，里面的方法有set、get、withInitial、remove
+
+Thread中会维护一个ThreadLocalMap，是一个Entry数组，继承了一个弱引用接口WeakReference<ThreadLocal<?>>，ThreadLocal就是这个ThreadLocalMap的一个Entry。
+
+### ThreadLocalMap的hash冲突
+
+ThreadLocalMap是一个数组。没有链表和红黑树的数据结构，set的时候会首先进行hash，然后看当前hash对应的数组位置上是有Entry如果有的话对比key是否一致，一直的话更新value值，不一致的话会在数组+1的位置进行插入，如果数组+1的唯一也不为空就往后+1，知道找到空的数组位置把Entry放进去。get的方法也是一样，hash完之后对比key，如果不一致去+1位get。
+
+### 应用场景
+
+像spring中通过ThreadLocal来保证当个数据库操作使用的是同一个连接。通过事物的传播级别，在多个事务之间做一些个巧妙的切换。
+
+### 内存泄露的问题
+
+内存泄漏就是说内存中有一些个无法被释放那么就无法被回收，ThreadLocal使用的是弱引用，Thread强引用了ThreadLocalMap，ThreadLocal在ThreadLocalMap中。解决的办法就是我们使用完ThreadLocal后调用一下remove方法将Entry移除，就能通过手动的方式避免内存泄漏。
+
 
 
 
