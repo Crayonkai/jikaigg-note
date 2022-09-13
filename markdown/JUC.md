@@ -62,11 +62,51 @@ sleep不会释放锁，他也不需要占用锁。wait会释放锁，但调用�
 
 主线程结束，用户线程还在运行，JVM存活
 
-#### 守护线程
+#### 守护线程(Daemon)
 
 一种特殊的线程，比如垃圾回收。
 
 没有用户线程，剩的都是守护线程，JVM会结束
+
+## Future接口
+
+>since jdk1.5
+>
+>异步任务接口，开一个分支任务子线程，专门处理耗时的复杂任务
+>
+>常见实现类FutureTask
+
+### FutureTask
+
+get方法容易造成阻塞。
+
+isDone()：是否执行完成
+
+## CompletableFuture接口
+
+>since: jdk8
+>
+>implement Future，CompletionStage
+
+#### 核心四个静态方法：
+
+1. public static CompletableFuture<Void> runAsync(Runnable runnable)
+   * 无返回值
+2. public static CompletableFuture<Void> runAsync(Runnable runnable,Executor executor) 
+   * 无返回值
+3. public static <U> CompletableFuture<U> supplyAsync(Supplier<U> supplier)
+   * 有返回值
+4. public static <U> CompletableFuture<U> supplyAsync(Supplier<U> supplier,Executor executor)
+   * 有返回值
+
+#### Executor说明
+
+* 如果没有Executor的方法，直接使用默认的ForkJoinPool.commonPool()作为它的线程池执行异步代码
+* 如果指定线程池，则使用自定义的或者特别指定的线程池执行异步代码
+
+![image-20220914000355023](./img/函数式接口总结.png)
+
+
 
 ## Lock接口
 
