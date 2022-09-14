@@ -106,6 +106,25 @@ isDone()：是否执行完成
 
 ![image-20220914000355023](./img/函数式接口总结.png)
 
+#### get和join比较
+
+```java
+	CompletableFuture<String> supplyAsync = CompletableFuture.supplyAsync(() -> {
+            return "hello async";
+        });
+        //get和join对比：get必须显式的抛出异常，join不用抛异常，如果执行过程中有一场会抛出
+		//System.out.println(supplyAsync.get());
+        System.out.println(supplyAsync.join());
+```
+
+
+
+
+
+
+
+
+
 
 
 ## Lock接口
