@@ -131,6 +131,10 @@ isDone()：是否执行完成
 
 ### synchronized关键字
 
+> static sychronized ：类锁，所的是Class
+>
+> sychronized：对象所，锁的是new出来的实例对象
+
 synchronized是java中的一个关键字，在中文中为同步，也被称之为’同步锁’,以此来达到多线程并发访问时候的并发安全问题，可以用来修饰代码块、非静态方法。静态方法等；
 
 * 修饰代码块时:给当前指定的对象加锁
