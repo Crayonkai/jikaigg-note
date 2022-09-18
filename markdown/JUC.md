@@ -6,15 +6,15 @@
 
 ### 进程和线程
 
-#### 进程：
+* 进程：
 
-进程是资源（CPU、内存等）分配的基本单位，它是程序执行时的一个实例。程序运行时系统就会创建一个进程，并为它分配资源，然后把该进程放入进程就绪队列，进程调度器选中它的时候就会为它分配CPU时间，程序开始真正运行。
+  进程是资源（CPU、内存等）分配的基本单位，它是程序执行时的一个实例。程序运行时系统就会创建一个进程，并为它分配资源，然后把该进程放入进程就绪队列，进程调度器选中它的时候就会为它分配CPU时间，程序开始真正运行。
 
-#### 线程：
+* 线程：
 
-线程是程序执行时的最小单位，它是进程的一个执行流，是CPU调度和分派的基本单位，一个进程可以由很多个线程组成，线程间共享进程的所有资源，每个线程有自己的堆栈和局部变量。线程由CPU独立调度执行，在多CPU环境下就允许多个线程同时运行。同样多线程也可以实现并发操作，每个请求分配一个线程来处理。
+  线程是程序执行时的最小单位，它是进程的一个执行流，是CPU调度和分派的基本单位，一个进程可以由很多个线程组成，线程间共享进程的所有资源，每个线程有自己的堆栈和局部变量。线程由CPU独立调度执行，在多CPU环境下就允许多个线程同时运行。同样多线程也可以实现并发操作，每个请求分配一个线程来处理。
 
-###二者的区别
+### 二者的区别
 
 1. 进程是资源分配的最小单位，线程是程序执行的最小单位
 2. 进程有自己的独立地址空间，每启动一个进程，系统就会为它分配地址空间，建立数据表来维护代码段、堆栈段和数据段，这种操作非常昂贵。而线程是共享进程中的数据的，使用相同的地址空间，因此CPU切换一个线程的花费远比进程要小很多，同时创建一个线程的开销也比进程要小很多。
@@ -32,6 +32,8 @@ TIMED_WAITING：计时等待
 TERMINATED：终结
 ```
 
+![preview](./img/threadstatus.png)
+
 ### wait和sleep
 
 wait方法是Object中的方法，任何对象实力都能调用
@@ -48,7 +50,7 @@ sleep不会释放锁，他也不需要占用锁。wait会释放锁，但调用�
 
 把每一个任务分配给每一个处理器独立完成。在同一时间点，任务一定是同时运行。
 
-### 管程
+### 管程（Monitor/监视器）
 
 管程在功能上和信号量及PV操作类似，属于一种进程同步互斥工具，但是具有与信号量及PV操作不同的属性。就是锁，java中是Monitor.
 
@@ -68,6 +70,12 @@ sleep不会释放锁，他也不需要占用锁。wait会释放锁，但调用�
 
 没有用户线程，剩的都是守护线程，JVM会结束
 
+
+
+---
+
+
+
 ## Future接口
 
 >since jdk1.5
@@ -81,6 +89,12 @@ sleep不会释放锁，他也不需要占用锁。wait会释放锁，但调用�
 get方法容易造成阻塞。
 
 isDone()：是否执行完成
+
+
+
+---
+
+
 
 ## CompletableFuture接口
 
@@ -123,13 +137,145 @@ isDone()：是否执行完成
 
 
 
+---
+
+
+
+## LockSupport
+
+> LockSupport用来创建锁和其他同步类的基本线程阻塞原语。简而言之，当调用LockSupport.park时，表示当前线程将会等待，直至获得许可，当调用LockSupport.unpark时，必须把等待获得许可的线程作为参数进行传递，好让此线程继续运行。
+>
+> permit许可证，多次调用unpark()也只会发放一个许可证，执行过park()消耗掉之后，再次执行park()依然会阻塞。
+
+park()：禁止当前线程进行线程调度，除非许可证可用。
+
+unpark()：为给定的线程提供许可证（如果尚未提供）。
 
 
 
 
-## Lock接口
 
-### synchronized关键字
+
+
+---
+
+
+
+## JMM（java memory model）/java内存模型
+
+![preview](./img/JMM1.png)
+
+![img](./img/JMM2.png)
+
+![img](./img/CPUCache.png)
+
+### 三大特性
+
+1. 原子性
+2. 可见性
+3. 有序性
+
+### happen-before原则（先行发生原则）
+
+* 如果一个操作happens-before另一个操作,那么第一个操作的执行结果对第二个操作可见,而且第一个操作的执行顺序排在第二个操作之前(可见性,有序性)
+
+* 两个操作之间存在happens-before关系,并不意外着一定要按照happens-before原则制定的顺序来执行。如果重排序之后的执行结果与按照happens-before关系来执行的结果一致,那么这种重排序并不非法(可以指令重排)
+
+  (值日:周一张三周二李四,假如有事情调换班可以的1+2+3=3+2+1)
+
+### 八大原则
+
+1. 次序规则
+
+   一个线程内,按照代码顺序,写在前面的操作先行发生于写在后面的操作(强调的是一个线程)
+
+   前一个操作的结果可以被后续的操作获取。将白点就是前面一个操作把变量X赋值为1,那后面一个操作肯定能知道X已经变成了1
+
+2. 锁定规则
+
+   一个unlock操作先行发生于后面((这里的"后面"是指时间上的先后))对同一个锁的lock操作(上一个线程unlock了,下一个线程才能获取到锁,进行lock)
+
+3. volatile变量规则
+
+   对一个volatile变量的写操作先行发生于后面对这个变量的读操作,前面的写对后面的读是可见的,这里的"后面"同样是指时间是的先后
+
+4. 传递规则
+
+   如果操作A先行发生于操作B,而操作B又先行发生于操作C,则可以得出A先行发生于操作C
+
+5.  线程启动规则(Thread Start Rule)
+
+   Thread对象的start( )方法先行发生于线程的每一个动作
+
+6. 线程中断规则(Thread Interruption Rule)
+
+   对线程interrupt( )方法的调用先发生于被中断线程的代码检测到中断事件的发生
+
+   可以通过Thread.interrupted( )检测到是否发生中断
+
+7.  线程终止规则(Thread Termination Rule)
+
+   线程中的所有操作都先行发生于对此线程的终止检测
+
+8. 对象终结规则(Finalizer Rule)
+
+   对象没有完成初始化之前,是不能调用finalized( )方法的
+
+
+
+---
+
+## volatile关键字
+
+> 缓存一致性协议：MESI
+>
+> 总线嗅探机制：总线锁
+
+### 内存屏障
+
+> 内存屏障是一种屏障指令，它使得CPU或编译器 对 屏障指令的 前和后 所发出的内存操作 执行一个排序的约束。也叫内存栅栏或栅栏指令。
+
+内存屏障能干嘛：
+
+![image-20220918013002369](./img/内存屏障2.png)
+
+* 读屏障（loadFence）
+
+  在读指令之前插入读屏障，让工作内存或CPU告诉缓存当中的缓存数据失效，重新回到主内存中读取最新数据
+
+* 写屏障（storeFence）
+
+  在写指令之后插入写屏障，强制把写缓冲区的数据刷回到主内存中
+
+![image-20220917195237068](./img/load&store.png)
+
+java字节码层面，被volatile修饰的变量，会打上一个flag:ACC_VOLATILE，有这个标签会添加上内存屏障。
+
+### 有序性
+
+![image-20220918003239317](./img/有序性.png)
+
+### 可见性
+
+![image-20220918004715667](./img/可见性1.png)
+
+![image-20220918004749235](./img/可见性2.png)
+
+
+
+
+
+
+
+
+
+
+
+---
+
+
+
+## synchronized关键字
 
 > static sychronized ：类锁，所的是Class
 >
@@ -190,8 +336,6 @@ synchronized是java中的一个关键字，在中文中为同步，也被称之�
 
 
 
-### 线程间通信
-
 
 
 
@@ -219,6 +363,152 @@ Lock：显式
 
 
 ### 死锁
+
+
+
+
+
+37  1
+
+62  1
+
+95  2
+
+78  1
+
+158  3
+
+107  2
+
+68  1
+
+125  2
+
+289  5
+
+
+
+
+
+
+
+## 中断(中断协商机制)
+
+### 三大方法
+
+* interrupt()
+
+  调用线程的终端方法，设置标志位为true，线程察觉到后自行处理结束线程
+
+* isInterrupted()
+
+  测试此线程是否已被设置为true标志位、
+
+* static interrupted()
+
+  如果执行interrupted()方法前被interrupt过。那么返回标志位true，并设置标志位为false，再次调用interrupted()时返回false
+
+  测试当前线程是否被中断
+
+  ![image-20220917015157409](./img/中断static和实例方法.png)
+
+#### 如何停止中断运行中的线程?
+
+1. 通过一个volatile变量实现
+
+   ```java
+    	static volatile boolean isStop = false;
+       public static void main(String[] args)
+       {
+           new Thread(() -> {
+               while (true)
+               {
+                   if(isStop)
+                   {
+                       System.out.println(Thread.currentThread().getName()+"\t isStop被修改为true，程序停止");
+                       break;
+                   }
+                   System.out.println("t1 -----hello volatile");
+               }
+           },"t1").start();
+   
+           //暂停毫秒
+           try { TimeUnit.MILLISECONDS.sleep(20); } catch (InterruptedException e) { e.printStackTrace(); }
+   
+           new Thread(() -> {
+               isStop = true;
+           },"t2").start();
+       }
+   ```
+
+2. 通过AtomicBoolean
+
+   ```java
+       static AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+       public static void main(String[] args)
+       {
+           new Thread(() -> {
+               while (true)
+               {
+                   if(atomicBoolean.get())
+                   {
+                       System.out.println(Thread.currentThread().getName()+"\t atomicBoolean被修改为true，程序停止");
+                       break;
+                   }
+                   System.out.println("t1 -----hello atomicBoolean");
+               }
+           },"t1").start();
+   
+           //暂停毫秒
+           try { TimeUnit.MILLISECONDS.sleep(20); } catch (InterruptedException e) { e.printStackTrace(); }
+   
+           new Thread(() -> {
+               atomicBoolean.set(true);
+           },"t2").start();
+       }
+       }
+   ```
+
+   
+
+3. 通过Thread类自带的中断API实例方法实现
+
+   ```java
+       static AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+       public static void main(String[] args)
+       {
+           Thread t1 = new Thread(() -> {
+               while (true)
+               {
+                   if(Thread.currentThread().isInterrupted())
+                   {
+                       System.out.println(Thread.currentThread().getName()+"\t isInterrupted()被修改为true，程序停止");
+                       break;
+                   }
+                   System.out.println("t1 -----hello interrupt api");
+               }
+           }, "t1");
+           t1.start();
+   
+           System.out.println("-----t1的默认中断标志位："+t1.isInterrupted());
+   
+           //暂停毫秒
+           try { TimeUnit.MILLISECONDS.sleep(20); } catch (InterruptedException e) { e.printStackTrace(); }
+   
+           //t2向t1发出协商，将t1的中断标志位设为true希望t1停下来
+           new Thread(() -> {
+               t1.interrupt();
+           },"t2").start();
+           //t1.interrupt();
+   
+       }
+   ```
+
+   
+
+#### 当前线程的中断标识为true，是不是线程就立刻停止?
+
+#### 静态方法Thread.interrupted()，谈谈你的理解?
 
 
 
@@ -259,6 +549,83 @@ ThreadLocalMap是一个数组。没有链表和红黑树的数据结构，set的
 ### 内存泄露的问题
 
 内存泄漏就是说内存中有一些个无法被释放那么就无法被回收，ThreadLocal使用的是弱引用，Thread强引用了ThreadLocalMap，ThreadLocal在ThreadLocalMap中。解决的办法就是我们使用完ThreadLocal后调用一下remove方法将Entry移除，就能通过手动的方式避免内存泄漏。
+
+
+
+
+
+## CAS与原子类
+
+### CAS
+
+> 乐观锁的一种实现
+
+
+
+
+
+
+
+
+
+### 原子类
+
+#### 基本类型原子类
+
+* **AtomicInteger**
+* **AtomicBoolean**
+* **AtomicLong**
+* **常用API**
+
+#### 数组类型原子类
+
+
+
+#### 引用类型原子类
+
+
+
+#### 对象的属性修改原子类
+
+
+
+#### 原子操作增强类原理
+
+> since： jdk 1.8
+
+LongAdder？？？？？？？？？？？？？？？？？？？？？？看源码
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

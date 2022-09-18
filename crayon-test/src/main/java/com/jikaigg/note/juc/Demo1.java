@@ -6,6 +6,8 @@ public class Demo1 {
         int a = 3;
         Integer b = a;
         System.out.println(b);
+        System.out.println(a++);
+        System.out.println(++a);
 
     }
 }
