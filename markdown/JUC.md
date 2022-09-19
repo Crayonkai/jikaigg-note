@@ -546,7 +546,18 @@ ThreadLocalMap是一个数组。没有链表和红黑树的数据结构，set的
 
 像spring中通过ThreadLocal来保证当个数据库操作使用的是同一个连接。通过事物的传播级别，在多个事务之间做一些个巧妙的切换。
 
+**ThreadLocal使用要在try-catch-finally的finally中进行remove释放。不然线程池场景下有线程复用问题会造成内存泄漏。**
+
 ### 内存泄露的问题
+
+#### 强软弱虚引用
+
+> finalize：Object的过时方法，在gc前执行
+
+* 强引用（Reference）：只要是强硬用的对象，就不会被GC
+* 软引用（SoftReference）：内存够用软引用对象不会被回收，内存不够用时GC会回收软引用对象的内存空间
+* 弱引用（WeakReference）：只要GC就会被回收，不管内存够不够用
+* 虚引用（PhantomRefrence）：必须要和RefrenceQueue联合使用，不能单独使用，也不能单独用它访问对象。设置虚引用的目的就是在这个对象被收集器回收的时候收到一个系统通知或后续添加进一步的处理，用来实现比finalize机制更灵活的回收操作。
 
 内存泄漏就是说内存中有一些个无法被释放那么就无法被回收，ThreadLocal使用的是弱引用，Thread强引用了ThreadLocalMap，ThreadLocal在ThreadLocalMap中。解决的办法就是我们使用完ThreadLocal后调用一下remove方法将Entry移除，就能通过手动的方式避免内存泄漏。
 
