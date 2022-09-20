@@ -283,6 +283,37 @@ java字节码层面，被volatile修饰的变量，会打上一个flag:ACC_VOLAT
 
 ---
 
+## 对象内存布局
+
+对象是由：对象头、实例数据、对其填充组成的
+
+对象头：由对象标记（Mark Word）和类元数据（又叫类型指针）组成的
+
+对其填充：保证对象的大小是8个字节的倍数。
+
+![image-20220920230626395](./img/对象内存布局1.png)
+
+**Object o = new Object();**
+
+在没有任何属性字段的情况下，大小为16个字节（系统为64位的前提下）。
+
+**面试官：为什么GC分代年龄最大为15**
+六六答：因为对象头中的Mark Word采用4个bit位来保存年龄，4个bit位能表示的最大数就是15！
+
+JOL查看对象头
+
+```java
+<dependency>
+    <groupId>org.openjdk.jol</groupId>
+    <artfactId>jol-core</artfactId>
+    <version>0.10</version>
+</dependency>
+```
+
+
+
+---
+
 
 
 ## synchronized关键字
