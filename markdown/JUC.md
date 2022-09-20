@@ -1,6 +1,14 @@
 # JUC
 
 > JUC就是java.util.concurrent工具包的简称，这是一个处理线程的工具包，JDK1.5开始出现的
+>
+> 包括： 
+>
+> > > java.util.concurrent
+> > >
+> > > java.util.concurrent.atomic
+> > >
+> > > java.util.concurrent.locks
 
 ## 基本概念
 
@@ -85,6 +93,8 @@ sleep不会释放锁，他也不需要占用锁。wait会释放锁，但调用�
 >常见实现类FutureTask
 
 ### FutureTask
+
+**FutrueTask是Futrue接口的唯一的实现类。 FutureTask 同时实现了Runnable, Future接口。它既可以作为 Runnable被线程执行，又可以作为Future得到Callable的返回值**
 
 get方法容易造成阻塞。
 
