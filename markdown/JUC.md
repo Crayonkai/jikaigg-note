@@ -735,19 +735,43 @@ LongAdder？？？？？？？？？？？？？？？？？？？？？？看�
 
 ## AbstractQueuedSynchronizer之AQS
 
+> 抽象队列同步器
+>
+> AQS对于JUC相当于JVM对于java
+>
+> CountDownLatch、ReentreantLock、ReentrantReadWriteLock、Semaphore底层都是有一个继承自AQS类的Sync抽象静态内部类来实现功能
+
+### 锁和同步器的关系
+
+* 锁是面向使用者，同步器面对锁的使用者
+* 提出统一规范并简化了锁的实现，将其抽象出来，屏蔽了同步状态管理、同步队列的管理和维护、阻塞线程排队和通知、唤醒机制等，是一切锁和同步组件实现的公共基础部分
+* 加锁会导致阻塞，有阻塞就需要排队，实现排队必然需要实现队列
+
+![image-20220924171639161](./img/AQS1.png)
+
+![image-20220924171716922](./img/AQS2.png)
+
+![image-20220924172736977](./img/AQS3.png)
 
 
 
+### State成员变量。状态位
 
 
 
+### CLH双端队列
+
+通过自旋等待，通过State变量判断是否阻塞，从尾部入队，从头部出队
 
 
 
+### 内部类Node
 
+![image-20220924175643818](./img/AQS4.png)
 
+### ReentrantLock
 
-
+![image-20220925152953101](./img/AQS5.png)
 
 
 
