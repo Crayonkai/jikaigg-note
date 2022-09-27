@@ -8,8 +8,34 @@ public class Base1 {
         // 待排序数组
         int[] arr = {4, 2, 1, 6, 3, 8, 4, 23, 0};
 //        base1();
-        selectSort(arr);
+//        selectSort(arr);
+        insertSort(arr);
 //        bubbleSort(arr);
+    }
+
+    /**
+     * 冒泡排序
+     *
+     * @param arr
+     * @return
+     */
+    public static int[] insertSort(int[] arr) {
+        if (arr == null || arr.length < 2) {
+            return arr;
+        }
+        int end = arr.length;
+        for (int i = 1; i < end; i++) {
+            int newIndex = i;
+            while (newIndex - 1 >= 0 && arr[newIndex - 1] > arr[newIndex]) {
+                arr[newIndex - 1] = arr[newIndex - 1] ^ arr[newIndex];
+                arr[newIndex] = arr[newIndex - 1] ^ arr[newIndex];
+                arr[newIndex - 1] = arr[newIndex - 1] ^ arr[newIndex];
+                newIndex--;
+            }
+            System.out.println(Arrays.toString(arr));
+            System.out.println("----------------");
+        }
+        return arr;
     }
 
     /**
