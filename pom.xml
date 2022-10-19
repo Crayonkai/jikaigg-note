@@ -19,6 +19,7 @@
         <module>crayon-dianping</module>
         <module>crayon-hotal-es</module>
         <module>crayon-hotal</module>
+        <module>test-transaction</module>
     </modules>
 
     <packaging>pom</packaging>
