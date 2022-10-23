@@ -21,24 +21,22 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectAll();
     }
 
-    //    @Transactional
-    public String test1() {
+    @Transactional(rollbackFor = Exception.class)
+    public String A() throws Exception {
+        userMapper.deleteById(2L);
         try {
-            userMapper.selectAll();
-            User yaojikai = new User(1L, "yaojikai", 20);
-            userMapper.updateById(yaojikai);
             int i = 1 / 0;
-            User yaojikai2 = new User(1L, "yaojikai", 30);
-            userMapper.updateById(yaojikai2);
-            return "success";
-        } catch (Exception e) {
-            log.error("处理失败", e);
-            return "fail";
+        }catch (ArithmeticException a){
+            throw new Exception("aaa");
         }
+        return "success";
     }
 
-    public String test2() {
-        return null;
+    @Transactional
+    public String B(){
+        userMapper.deleteById(3L);
+        int i = 1 / 0;
+        return "success";
     }
 
 

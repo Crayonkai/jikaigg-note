@@ -28,8 +28,8 @@ public class UserController {
 
     @RequestMapping("test")
     @ResponseBody
-    public String test(){
-        userServiceImpl.test1();
+    public String test() throws Exception {
+        userServiceImpl.A();
         return "success";
     }
 }

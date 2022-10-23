@@ -17,10 +17,13 @@
         from tb_user
         where id = #{id}
     </select>
-    <update id="updateById" parameterType="java.lang.Long">
+    <update id="updateById" parameterType="com.jikaigg.transaction.domain.User">
         update tb_user
         set username = #{username},
             age      = #{age}
         where id = #{id}
     </update>
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from tb_user where id = #{id}
+    </delete>
 </mapper>

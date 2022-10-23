@@ -10,4 +10,6 @@ public interface UserMapper {
     List<User> selectAll();
     User selectById(Long id);
     int updateById(User user);
+
+    int deleteById(Long id);
 }
