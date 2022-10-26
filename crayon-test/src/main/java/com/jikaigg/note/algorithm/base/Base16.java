@@ -1,6 +1,6 @@
 package com.jikaigg.note.algorithm.base;
 
-import java.util.Stack;
+import java.util.*;
 
 public class Base16 {
     public static void main(String[] args) {
@@ -31,6 +31,8 @@ public class Base16 {
         nin(node);
         System.out.println("非递归后序遍历");
         nafter(node);
+        System.out.println("非递归层序遍历");
+        nodefor(node);
 
     }
 
@@ -127,6 +129,25 @@ public class Base16 {
             }
             while (!sout.isEmpty()) {
                 System.out.println(sout.pop().value);
+            }
+        }
+    }
+
+    /*
+     * 层序遍历，用队列解决。
+     * */
+    public static void nodefor(Node node) {
+        List<Integer> list = new ArrayList();
+        Queue<Node> nodes = new LinkedList<>();
+        nodes.offer(node);
+        while (!nodes.isEmpty()) {
+            node = nodes.poll();
+            System.out.println(node.value);
+            if (node.left != null) {
+                nodes.offer(node.left);
+            }
+            if (node.right != null) {
+                nodes.offer(node.right);
             }
         }
     }
